@@ -54,9 +54,9 @@ public class QuestionBuilder {
         int oldRandomNumber;
         // Check for subtraction
         for (int i = operations.length - 1;  i > -1; --i) {
-            if (operations[i] == 1  && numbers.size() < i) {
+            if (operations[i] == 1  && numbers.size() <= i) {
                 System.out.println("Found subtraction at " + i);
-                if (numbers.size() == i) {
+                if (numbers.size() >= i && i > 0) {
                     System.out.println("Number directly to the left determined, use random number " + randomNumber + " in place of result");
                     oldRandomNumber = randomNumber;
                     randomNumber = random.nextInt(13);
@@ -80,22 +80,30 @@ public class QuestionBuilder {
         }
         // Check for addition
         for (int i = operations.length - 1;  i > -1; --i) {
-            if (operations[i] == 0  && numbers.size() < i) {
+            if (operations[i] == 0  && numbers.size() <= i) {
                 System.out.println("Found addition at " + i);
-                if (numbers.size() == i) {
+                if (numbers.size() >= i && i > 0) {
                     System.out.println("Number directly to the left determined, use random number " + randomNumber + " in place of result");
                     oldRandomNumber = randomNumber;
-                    randomNumber = random.nextInt(13);
+                    if (oldRandomNumber == 0) {
+                        randomNumber = 0;
+                    } else {
+                        randomNumber = random.nextInt(13);
+                    }
                     numbers.add(oldRandomNumber - randomNumber);
                     System.out.println(oldRandomNumber + " - " + randomNumber + " = " + (oldRandomNumber - randomNumber));
                 } else {
-                    randomNumber = random.nextInt(result);
+                    //TODO handle result of 0
+                    if (result == 0) {
+                        randomNumber = 0;
+                    } else {
+                        randomNumber = random.nextInt(result);
+                    }
                     System.out.println(result + " - " + randomNumber + " = " + (result - randomNumber));
                     System.out.println("Recurring with operations " + Arrays.toString(Arrays.copyOfRange(operations, 0, i)) + " and result " + (result - randomNumber));
                     numbers.addAll(generateNumbers(
                             Arrays.copyOfRange(operations, 0, i),
                             result - randomNumber));
-
                 }
                 // If all numbers left of operators have been generated add the random number to the right
                 if (numbers.size() == operations.length) {
@@ -107,9 +115,9 @@ public class QuestionBuilder {
         }
         // Check for division
         for (int i = operations.length - 1;  i > -1; --i) {
-            if (operations[i] == 3 && numbers.size() - 1 < i) {
+            if (operations[i] == 3 && numbers.size() <= i) {
                 System.out.println("Found division at " + i);
-                if (numbers.size() == i && numbers.size() > 0) {
+                if (numbers.size() >= i && i > 0) {
                     System.out.println("Number directly to the left determined, use random number " + randomNumber + " in place of result");
                     oldRandomNumber = randomNumber;
                     randomNumber = random.nextInt(12) + 1;
@@ -133,12 +141,12 @@ public class QuestionBuilder {
         }
         // Check for multiplication
         for (int i = operations.length - 1;  i > -1; --i) {
-            if (operations[i] == 2  && numbers.size() - 1 < i && numbers.size() > 0) {
+            if (operations[i] == 2  && numbers.size() <= i) {
                 System.out.println("Found multiplication at " + i);
-                if (numbers.size() == i) {
+                if (numbers.size() >= i && i > 0) {
                     System.out.println("Number directly to the left determined, use random number " + randomNumber + " in place of result");
                     if (randomNumber == 0) {
-                        System.out.println("You're not on the list...");
+                        System.out.println("Result needs to be 0");
                         randomNumber = random.nextInt(13);
                         if (randomNumber == 0) {
                             numbers.add(random.nextInt(12 + 1));
@@ -152,7 +160,6 @@ public class QuestionBuilder {
                         randomNumber = random.nextInt(12) + 1; //TODO make into set of possible integers and loop while removing selection for finite loop + make into helper method
                         // Generate numbers until the result of division is a whole number other than 0
                         while (oldRandomNumber % randomNumber != 0 || result / randomNumber == 0) {
-                            System.out.println("Number " + randomNumber + " bad, try again");
                             randomNumber = random.nextInt(12) + 1;
                         }
                         numbers.add(oldRandomNumber / randomNumber);
@@ -162,7 +169,6 @@ public class QuestionBuilder {
                     randomNumber = random.nextInt(12) + 1; //TODO make into set of possible integers and loop while removing selection for finite loop + make into helper method
                     // Generate numbers until the result of division is a whole number
                     while (result % randomNumber != 0 || result / randomNumber == 0) {
-                        System.out.println("Number bad, try again");
                         randomNumber = random.nextInt(12) + 1;
                     }
                     System.out.println(result + " / " + randomNumber + " = " + (result / randomNumber));
