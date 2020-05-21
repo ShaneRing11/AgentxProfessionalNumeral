@@ -1,12 +1,9 @@
 package au.edu.jcu.cp3406.agentxprofessionalnumeral;
 
-import android.util.Log;
-
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.Random;
 
 import static org.junit.Assert.*;
@@ -22,7 +19,8 @@ public class QuestionBuilderTest {
         QuestionBuilder questionBuilder = new QuestionBuilder(4);
         Random random = new Random();
 
-        for (int iteration = 0; iteration < 1; ++iteration) {
+        for (int iteration = 0; iteration < 100; ++iteration) {
+            System.out.println("\nTest " + iteration + ":");
             // Generate a number of operations between 1 and maxOperations
             int numOperations = random.nextInt(5);
             if (numOperations == 0) {
@@ -48,7 +46,7 @@ public class QuestionBuilderTest {
             int result = random.nextInt(resultBound);
             System.out.println("Generating numbers with a result of " + result + " with operations " + Arrays.toString(operations));
             ArrayList<Integer> numbers = questionBuilder.generateNumbers(operations, result);
-            ArrayList<Integer> operationsList = new ArrayList<Integer>();
+            ArrayList<Integer> operationsList = new ArrayList<>();
             for (int operation : operations) {
                 operationsList.add(operation);
             }
