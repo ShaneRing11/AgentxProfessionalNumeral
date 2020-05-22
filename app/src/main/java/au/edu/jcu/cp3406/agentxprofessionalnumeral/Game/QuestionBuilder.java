@@ -1,4 +1,4 @@
-package au.edu.jcu.cp3406.agentxprofessionalnumeral;
+package au.edu.jcu.cp3406.agentxprofessionalnumeral.Game;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -9,8 +9,8 @@ public class QuestionBuilder {
     private int maxOperations;
     private Random random;
 
-    QuestionBuilder(int maxOperations) {
-        this.maxOperations = maxOperations;
+    public QuestionBuilder(int maxOperations) {
+        this.maxOperations = maxOperations; //TODO change to difficulty
         random = new Random();
     }
 
@@ -22,18 +22,22 @@ public class QuestionBuilder {
         }
         // Generate a random set of operations
         int[] operations = new int[numOperations];
-        boolean containsDivision = false;
+        boolean hasDivision = false;
+        boolean hasMultiplication = false;
         for (int operationIndex = 0; operationIndex < operations.length; ++operationIndex) {
             int operation = random.nextInt(4);
             operations[operationIndex] = operation;
+            if (operation == 2) {
+                hasMultiplication = true;
+            }
             if (operation == 3) {
-                containsDivision = true;
+                hasDivision = true;
             }
         }
         // Generate equations result
         int resultBound = 101;
         // Make result a smaller number if the question contains division
-        if (containsDivision) {
+        if (hasDivision) {
             resultBound = 13;
         }
         int result = random.nextInt(resultBound);
@@ -46,10 +50,10 @@ public class QuestionBuilder {
         }
         // Generate a random index value to be x with, length + 1 indicates the result is x
         int missingValue = random.nextInt(numbersArray.length + 1);
-        return new Question(numbersArray, operations, result, missingValue);
+        return new Question(numbersArray, operations, result, missingValue, hasMultiplication, hasDivision);
     }
 
-     ArrayList<Integer> generateNumbers(int[] operations, int result) {
+     private ArrayList<Integer> generateNumbers(int[] operations, int result) {
         ArrayList<Integer> numbers = new ArrayList<>();
         int randomNumber = 0;
         int oldRandom;
