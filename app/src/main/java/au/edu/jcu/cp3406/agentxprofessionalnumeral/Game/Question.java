@@ -1,6 +1,6 @@
 package au.edu.jcu.cp3406.agentxprofessionalnumeral.Game;
 
-class Question {
+public class Question {
 
     private int[] numbers; // Numbers on the LHS of the equation
     private int[] operations; // List of operations from left to right of equation
@@ -9,7 +9,7 @@ class Question {
     private boolean hasMultiplication;
     private boolean hasDivision;
 
-     Question(int[] numbers, int[] operations, int result, int missingValue,
+    Question(int[] numbers, int[] operations, int result, int missingValue,
               boolean hasMultiplication, boolean hasDivision) {
         this.numbers = numbers;
         this.operations = operations;
@@ -20,7 +20,7 @@ class Question {
     }
 
     // Checks if the players guess is correct
-    boolean checkGuess(int guess) {
+    public boolean checkGuess(int guess) {
          int answer;
          if (missingValue == numbers.length) {
              answer = result;
@@ -87,6 +87,21 @@ class Question {
          return missingValue == numbers.length;
     }
 
+    public int[] getNumbers() {
+        return numbers;
+    }
+
+    public  int[] getOperations() {
+        return operations;
+    }
+
+    public int getResult() {
+        return result;
+    }
+
+    public int getMissingValue() {
+        return missingValue;
+    }
 }
 
 
