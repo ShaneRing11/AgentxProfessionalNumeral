@@ -15,20 +15,19 @@ public class Game {
         score = 0;
         detection = 0;
         bombsRemaining = 3;
-        incorrectGuesses = 0;
     }
 
-    private void generateQuestion() {
+    public void generateQuestion() {
         incorrectGuesses = 0;
         timeBonus = 15;
         question = questionBuilder.buildQuestion();
     }
 
-    private void updateDetection(int addedDetection) {
+    public void updateDetection(int addedDetection) {
         detection += addedDetection;
     }
 
-    private void updateScore() {
+    public void updateScore() {
         int points = question.getLength() + timeBonus;
         if (question.hasMultiplication()) {
             points *= 2;
@@ -50,26 +49,14 @@ public class Game {
         updateDetection(1);
     }
 
-    public void checkGuess(int guess) {
-        //TODO move into GameActivity and
-        boolean isCorrect = question.checkGuess(guess);
-        if (!isCorrect) {
-            updateDetection(10);
-            ++incorrectGuesses;
-            if (incorrectGuesses == 3) {
-                generateQuestion();
-            }
-        } else {
-            updateScore();
-            generateQuestion();
-        }
+    public boolean checkGuess(int guess) {
+        return question.checkGuess(guess);
     }
 
     public void useBomb() {
         if (bombsRemaining > 0) {
             bombsRemaining -= 1;
             updateDetection(5);
-            generateQuestion();
         }
     }
 
@@ -82,7 +69,8 @@ public class Game {
         return detection;
     }
 
-    public int getBombsRemaining(){
+    public int
+    getBombsRemaining(){
         return bombsRemaining;
     }
 

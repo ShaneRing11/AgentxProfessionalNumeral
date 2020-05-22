@@ -11,6 +11,11 @@
     <string name="difficulty">Difficulty</string>
     <string name="sound">Sound</string>
     <string name="save">Save</string>
+    <string name="score">Score: %d</string>
+    <string name="detection">Detection: %d\%</string>
+    <string name="guess_hint">Enter value of X</string>
+    <string name="disguise">Disguise!</string>
+    <string name="bomb">Smoke bomb: %d</string>
     <array name="difficulties">
         <item>Easy</item>
         <item>Medium</item>
