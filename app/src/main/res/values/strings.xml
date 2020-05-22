@@ -3,4 +3,18 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title">Agent X</string>
+    <string name="subtitle">Professional Numeral</string>
+    <string name="play">Play</string>
+    <string name="settings">Settings</string>
+    <string name="high_scores">High Scores</string>
+    <string name="difficulty">Difficulty</string>
+    <string name="sound">Sound</string>
+    <string name="save">Save</string>
+    <array name="difficulties">
+        <item>Easy</item>
+        <item>Medium</item>
+        <item>Hard</item>
+        <item>Expert</item>
+    </array>
 </resources>
