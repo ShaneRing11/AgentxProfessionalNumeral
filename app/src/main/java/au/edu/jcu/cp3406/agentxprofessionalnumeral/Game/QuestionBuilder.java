@@ -1,20 +1,35 @@
 package au.edu.jcu.cp3406.agentxprofessionalnumeral.Game;
 
+import android.widget.Switch;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
 public class QuestionBuilder {
 
-    private int maxOperations;
+    private Difficulty difficulty;
     private Random random;
 
-    public QuestionBuilder(int maxOperations) {
-        this.maxOperations = maxOperations; //TODO change to difficulty
+    public QuestionBuilder(Difficulty difficulty) {
+        this.difficulty = difficulty;
         random = new Random();
     }
 
     public Question buildQuestion() {
+        // Set maximum number of operations based on difficulty selected
+        int maxOperations = 2;
+        switch (difficulty) {
+            case EASY:
+                maxOperations = 1;
+                break;
+            case HARD:
+                maxOperations = 3;
+                break;
+            case EXPERT:
+                maxOperations = 4;
+                break;
+        }
         // Generate a number of operations between 1 and maxOperations
         int numOperations = random.nextInt(maxOperations);
         if (numOperations == 0) {
@@ -175,37 +190,19 @@ public class QuestionBuilder {
                 // If number to left of operation is generated, calculate using random number as required result
                 if (numbers.size() >= i && i > 0) {
                     oldRandom = randomNumber;
-                    // Generate numbers until the result of division is a whole number
-                    randomNumber = random.nextInt(12) + 1; //TODO make into set of possible integers and loop while removing selection for finite loop + make into helper method
-                    if (oldRandom != 0) { // If the result is 0 dividing by anything will equal zero so any number will do
-                        while (oldRandom % randomNumber != 0 || oldRandom / randomNumber == 0) {
-                            randomNumber = random.nextInt(12) + 1;
-                        }
-                    }
+                    randomNumber = generateDivisor(oldRandom);
                     numbers.add(oldRandom / randomNumber);
                 } else {
                     // If there are numbers generated trim complete operations to the left
                     if (numbers.size() > 0) {
                         oldRandom = randomNumber;
-                        // Generate numbers until the result of division is a whole number
-                        randomNumber = random.nextInt(12) + 1; //TODO make into set of possible integers and loop while removing selection for finite loop + make into helper method
-                        if (oldRandom != 0) { // If the result is 0 dividing by anything will equal zero so any number will do
-                            while (oldRandom % randomNumber != 0 || oldRandom / randomNumber == 0) {
-                                randomNumber = random.nextInt(12) + 1;
-                            }
-                        }
+                        randomNumber = generateDivisor(oldRandom);
                         // Generate and append numbers for incomplete operations to the left
                         numbers.addAll(generateNumbers(
                                 Arrays.copyOfRange(operations, numbers.size(), i),
                                 oldRandom / randomNumber));
                     } else {
-                        // Generate numbers until the result of division is a whole number
-                        randomNumber = random.nextInt(12) + 1; //TODO make into set of possible integers and loop while removing selection for finite loop + make into helper method
-                        if (result != 0) { // If the result is 0 dividing by anything will equal zero so any number will do
-                            while (result % randomNumber != 0 || result / randomNumber == 0) {
-                                randomNumber = random.nextInt(12) + 1;
-                            }
-                        }
+                        randomNumber = generateDivisor(result);
                         // Generate and append numbers for operations to the left
                         numbers.addAll(generateNumbers(
                                 Arrays.copyOfRange(operations, numbers.size(), i),
@@ -222,5 +219,16 @@ public class QuestionBuilder {
         // If no operations append the result to numbers
         numbers.add(result);
         return numbers;
+    }
+
+    // Generates a divisor that will result in a whole number
+    private int generateDivisor(int result) {
+        int randomNumber = random.nextInt(12) + 1;
+        if (result != 0) { // If the result is 0 dividing by anything will equal zero so any number will do
+            while (result % randomNumber != 0 || result / randomNumber == 0) {
+                randomNumber = random.nextInt(12) + 1;
+            }
+        }
+        return randomNumber;
     }
 }

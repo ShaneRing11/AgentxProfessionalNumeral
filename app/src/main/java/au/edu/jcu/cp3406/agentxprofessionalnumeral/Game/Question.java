@@ -32,7 +32,7 @@ class Question {
     }
 
     // Builds and returns a string representation of the question, replacing the missing value with x
-    public String toString() {
+    public String display() {
          StringBuilder questionString = new StringBuilder();
          for (int i = 0; i < operations.length; ++i) {
              if (i == missingValue) {
@@ -77,8 +77,14 @@ class Question {
     boolean hasMultiplication() {
          return hasMultiplication;
     }
+
     boolean hasDivision() {
          return hasDivision;
+    }
+
+    // Checks to see if the RHS of the equation is the missing value
+    boolean resultIsX() {
+         return missingValue == numbers.length;
     }
 
 }

@@ -5,13 +5,12 @@ public class Game {
     private QuestionBuilder questionBuilder;
     private Question question;
     private int score;
-    //TODO implement difficulty
     private int detection;
     private int bombsRemaining;
     private int incorrectGuesses;
 
-    public Game() {
-        questionBuilder = new QuestionBuilder(3); //TODO change to difficulty
+    public Game(Difficulty difficulty) {
+        questionBuilder = new QuestionBuilder(difficulty);
         score = 0;
         detection = 0;
         bombsRemaining = 3;
@@ -26,7 +25,7 @@ public class Game {
     public void updateDetection(int addedDetection) {
         detection += addedDetection;
     }
-    
+
     public void updateScore() {
         //TODO add time tracking and bonus
         int points = question.getLength();
@@ -36,7 +35,9 @@ public class Game {
         if (question.hasDivision()) {
             points *= 2;
         }
-        //TODO divide by 2 if x is the result
+        if (question.resultIsX()) {
+            points /= 2;
+        }
         score += points;
     }
 
@@ -61,5 +62,18 @@ public class Game {
             updateDetection(5);
             generateQuestion();
         }
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+
+    public int getDetection() {
+        return detection;
+    }
+
+    public int getBombsRemaining(){
+        return bombsRemaining;
     }
 }
