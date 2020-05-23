@@ -16,6 +16,7 @@
     <string name="guess_hint">Enter value of X</string>
     <string name="disguise">Disguise!</string>
     <string name="bomb">Smoke bomb: %d</string>
+    <string name="no_guess">No guess entered</string>
     <array name="difficulties">
         <item>Easy</item>
         <item>Medium</item>

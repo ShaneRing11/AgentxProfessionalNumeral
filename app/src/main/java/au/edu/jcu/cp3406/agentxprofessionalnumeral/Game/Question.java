@@ -9,8 +9,8 @@ public class Question {
     private boolean hasMultiplication;
     private boolean hasDivision;
 
-    Question(int[] numbers, int[] operations, int result, int missingValue,
-              boolean hasMultiplication, boolean hasDivision) {
+    public Question(int[] numbers, int[] operations, int result, int missingValue,
+                    boolean hasMultiplication, boolean hasDivision) {
         this.numbers = numbers;
         this.operations = operations;
         this.result = result;
@@ -74,11 +74,11 @@ public class Question {
          return operations.length;
     }
 
-    boolean hasMultiplication() {
+    public boolean hasMultiplication() {
          return hasMultiplication;
     }
 
-    boolean hasDivision() {
+    public boolean hasDivision() {
          return hasDivision;
     }
 

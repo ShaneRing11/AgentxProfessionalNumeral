@@ -7,8 +7,6 @@ public class Game {
     private int score;
     private int detection;
     private int bombsRemaining;
-    private int incorrectGuesses;
-    private int timeBonus;
 
     public Game(Difficulty difficulty) {
         questionBuilder = new QuestionBuilder(difficulty);
@@ -17,9 +15,15 @@ public class Game {
         bombsRemaining = 3;
     }
 
+    public Game(Difficulty difficulty, int score, int detection, int bombsRemaining, Question question) {
+        questionBuilder = new QuestionBuilder(difficulty);
+        this.score = score;
+        this.detection = detection;
+        this.bombsRemaining = bombsRemaining;
+        this.question = question;
+    }
+
     public void generateQuestion() {
-        incorrectGuesses = 0;
-        timeBonus = 15;
         question = questionBuilder.buildQuestion();
     }
 
@@ -27,7 +31,7 @@ public class Game {
         detection += addedDetection;
     }
 
-    public void updateScore() {
+    public void updateScore(int timeBonus) {
         int points = question.getLength() + timeBonus;
         if (question.hasMultiplication()) {
             points *= 2;
@@ -39,14 +43,6 @@ public class Game {
             points /= 2;
         }
         score += points;
-    }
-
-    // Increment the time bonus and threat values
-    public void tick() {
-        if (timeBonus > 0) {
-            --timeBonus;
-        }
-        updateDetection(1);
     }
 
     public boolean checkGuess(int guess) {
@@ -64,17 +60,19 @@ public class Game {
         return score;
     }
 
-
     public int getDetection() {
         return detection;
     }
 
-    public int
-    getBombsRemaining(){
+    public int getBombsRemaining(){
         return bombsRemaining;
     }
 
     public String displayQuestion() {
         return question.display();
+    }
+
+    public Question getQuestion() {
+        return question;
     }
 }
