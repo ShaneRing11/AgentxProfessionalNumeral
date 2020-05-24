@@ -61,7 +61,8 @@ public class GameFragment extends Fragment {
                     savedInstanceState.getInt("missingValue"),
                     savedInstanceState.getBoolean("hasMultiplication"),
                     savedInstanceState.getBoolean("hasDivision"));
-            game = new Game((Difficulty) savedInstanceState.getSerializable("difficulty"),
+            difficulty = (Difficulty) savedInstanceState.getSerializable("difficulty");
+            game = new Game(difficulty,
                     savedInstanceState.getInt("score"),
                     savedInstanceState.getInt("bombsRemaining"),
                     savedQuestion);
@@ -71,7 +72,8 @@ public class GameFragment extends Fragment {
             }
             question.setText(game.displayQuestion());
         } else {
-            game = new Game(Difficulty.MEDIUM);
+            difficulty = Difficulty.MEDIUM;
+            game = new Game(difficulty);
         }
         bomb.setText(String.format(Locale.getDefault(), getString(R.string.bomb), game.getBombsRemaining()));
         bomb.setOnClickListener(new View.OnClickListener() {
@@ -107,7 +109,7 @@ public class GameFragment extends Fragment {
     @Override
     public void onSaveInstanceState(@NonNull Bundle bundle) {
         // Save fragment data
-        bundle.putSerializable("difficulty", difficulty); //TODO fix crash when generating question after rotation due to null difficulty
+        bundle.putSerializable("difficulty", difficulty);
         bundle.putInt("incorrectGuesses", incorrectGuesses);
         bundle.putCharSequence("guess", guess.getText());
 
