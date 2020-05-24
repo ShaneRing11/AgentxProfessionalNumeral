@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
                 intent = new Intent(this, GameActivity.class);
                 intent.putExtra("playSound", playSound);
                 intent.putExtra(GameActivity.EXTRA_DIFFICULTY, difficulty);
-                startActivityForResult(intent, 751);
+                startActivity(intent);
                 break;
             case R.id.highScores:
                 break;
@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
                 intent = new Intent(this, SettingsActivity.class);
                 intent.putExtra("playSound", playSound);
                 intent.putExtra(SettingsActivity.EXTRA_DIFFICULTY, difficulty);
-                startActivity(intent);
+                startActivityForResult(intent, 751);
                 break;
         }
     }

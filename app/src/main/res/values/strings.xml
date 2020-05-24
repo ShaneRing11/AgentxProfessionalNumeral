@@ -12,11 +12,12 @@
     <string name="sound">Sound</string>
     <string name="save">Save</string>
     <string name="score">Score: %d</string>
-    <string name="detection">Detection: %d\%</string>
+    <string name="detection">Detection: %d%%</string>
     <string name="guess_hint">Enter value of X</string>
     <string name="disguise">Disguise!</string>
     <string name="bomb">Smoke bomb: %d</string>
     <string name="no_guess">No guess entered</string>
+    <string name="game_over">They\'ve found you, get out of there!</string>
     <array name="difficulties">
         <item>Easy</item>
         <item>Medium</item>

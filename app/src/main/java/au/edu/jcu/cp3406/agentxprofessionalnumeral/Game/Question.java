@@ -1,5 +1,9 @@
 package au.edu.jcu.cp3406.agentxprofessionalnumeral.Game;
 
+import android.util.Log;
+
+import java.util.Arrays;
+
 public class Question {
 
     private int[] numbers; // Numbers on the LHS of the equation
@@ -13,6 +17,7 @@ public class Question {
                     boolean hasMultiplication, boolean hasDivision) {
         this.numbers = numbers;
         this.operations = operations;
+        Log.i("Question", Arrays.toString(operations));
         this.result = result;
         this.missingValue = missingValue;
         this.hasMultiplication = hasMultiplication;

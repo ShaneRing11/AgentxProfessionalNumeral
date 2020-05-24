@@ -1,7 +1,9 @@
 package au.edu.jcu.cp3406.agentxprofessionalnumeral;
 
 public enum State {
-    CONTINUE_GAME,
-    DETECTED,
-    START_GAME
+    NEW_GAME,
+    INCORRECT_GUESS,
+    CORRECT_GUESS,
+    BOMB_THROWN,
+    GAME_OVER
 }
