@@ -18,6 +18,10 @@
     <string name="bomb">Smoke bomb: %d</string>
     <string name="no_guess">No guess entered</string>
     <string name="game_over">They\'ve found you, get out of there!</string>
+    <string name="name_hint">Enter agent codename</string>
+    <string name="submit_score">Submit score</string>
+    <string name="main_menu">Main menu</string>
+    <string name="new_game">New game</string>
     <array name="difficulties">
         <item>Easy</item>
         <item>Medium</item>

@@ -50,13 +50,13 @@ public class StatusFragment extends Fragment {
         if (savedInstanceState == null) {
             detection = 0;
             timeBonus = 15;
+            score.setText(String.format(Locale.getDefault(), getString(R.string.score), 0));
         } else {
             detection = savedInstanceState.getInt("detection");
             timeBonus = savedInstanceState.getInt("timeBonus");
             gameRunning = savedInstanceState.getBoolean("gameRunning");
         }
-        score.setText(String.format(Locale.getDefault(), getString(R.string.score), 0));
-        if (detection < 100) {
+        if (detection > 100) {
             message.setText(getString(R.string.game_over));
         } else {
             message.setText(String.format(Locale.getDefault(), getString(R.string.detection), detection));
@@ -125,5 +125,11 @@ public class StatusFragment extends Fragment {
 
     int getTimeBonus() {
         return timeBonus;
+    }
+
+    void reset() {
+        detection = 0;
+        timeBonus = 15;
+        score.setText(String.format(Locale.getDefault(), getString(R.string.score), 0));
     }
 }

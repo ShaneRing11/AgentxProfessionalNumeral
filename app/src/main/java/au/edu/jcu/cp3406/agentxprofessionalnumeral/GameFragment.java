@@ -27,9 +27,8 @@ public class GameFragment extends Fragment {
 
     private StateListener listener;
     private TextView question;
-    private Button bomb;
-    private Button submit;
     private EditText guess;
+    private Button bomb;
     private Game game;
     private int incorrectGuesses;
 
@@ -52,7 +51,7 @@ public class GameFragment extends Fragment {
         question = view.findViewById(R.id.question);
         guess = view.findViewById(R.id.guess);
         bomb = view.findViewById(R.id.bomb);
-        submit = view.findViewById(R.id.submit);
+        Button submit = view.findViewById(R.id.submit);
         if (savedInstanceState != null) {
             guess.setText(savedInstanceState.getCharSequence("guess"));
             Question savedQuestion = new Question(savedInstanceState.getIntArray("numbers"),
@@ -143,8 +142,7 @@ public class GameFragment extends Fragment {
         bomb.setText(String.format(Locale.getDefault(), getString(R.string.bomb), game.getBombsRemaining()));
     }
 
-    void clear() {
-        question.setText("");
-        //TODO Hide and disable buttons
+    int getScore() {
+        return game.getScore();
     }
 }

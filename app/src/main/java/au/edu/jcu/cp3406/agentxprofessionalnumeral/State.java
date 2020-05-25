@@ -5,5 +5,6 @@ public enum State {
     INCORRECT_GUESS,
     CORRECT_GUESS,
     BOMB_THROWN,
-    GAME_OVER
+    GAME_OVER,
+    MAIN_MENU
 }
