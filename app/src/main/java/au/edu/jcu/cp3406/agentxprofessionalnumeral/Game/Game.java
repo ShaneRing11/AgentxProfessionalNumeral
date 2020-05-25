@@ -2,30 +2,23 @@ package au.edu.jcu.cp3406.agentxprofessionalnumeral.Game;
 
 public class Game {
 
-    private QuestionBuilder questionBuilder;
     private Question question;
     private int score;
     private int bombsRemaining;
 
-    public Game(Difficulty difficulty) {
-        questionBuilder = new QuestionBuilder(difficulty);
+    public Game() {
         score = 0;
         bombsRemaining = 3;
     }
 
-    public Game(Difficulty difficulty, int score, int bombsRemaining, Question question) {
-        questionBuilder = new QuestionBuilder(difficulty);
+    public Game(int score, int bombsRemaining, Question question) {
         this.score = score;
         this.bombsRemaining = bombsRemaining;
         this.question = question;
     }
 
-    public void generateQuestion() {
-        question = questionBuilder.buildQuestion();
-    }
-
-    public int updateScore(int timeBonus) {
-        int points = question.getLength() + timeBonus;
+    public int updateScore(int bonus) {
+        int points = question.getLength() + bonus;
         if (question.hasMultiplication()) {
             points *= 2;
         }
@@ -63,5 +56,9 @@ public class Game {
 
     public Question getQuestion() {
         return question;
+    }
+
+    public void setQuestion(Question question) {
+        this.question = question;
     }
 }

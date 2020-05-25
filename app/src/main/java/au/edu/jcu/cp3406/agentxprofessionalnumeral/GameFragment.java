@@ -16,7 +16,6 @@ import android.widget.Toast;
 
 import java.util.Locale;
 
-import au.edu.jcu.cp3406.agentxprofessionalnumeral.Game.Difficulty;
 import au.edu.jcu.cp3406.agentxprofessionalnumeral.Game.Game;
 import au.edu.jcu.cp3406.agentxprofessionalnumeral.Game.Question;
 
@@ -28,8 +27,9 @@ public class GameFragment extends Fragment {
 
     private StateListener listener;
     private TextView question;
+    private Button bomb;
+    private Button submit;
     private EditText guess;
-    private Difficulty difficulty;
     private Game game;
     private int incorrectGuesses;
 
@@ -51,8 +51,8 @@ public class GameFragment extends Fragment {
         final View view = inflater.inflate(R.layout.fragment_game, container, false);
         question = view.findViewById(R.id.question);
         guess = view.findViewById(R.id.guess);
-        final Button bomb = view.findViewById(R.id.bomb);
-        final Button submit = view.findViewById(R.id.submit);
+        bomb = view.findViewById(R.id.bomb);
+        submit = view.findViewById(R.id.submit);
         if (savedInstanceState != null) {
             guess.setText(savedInstanceState.getCharSequence("guess"));
             Question savedQuestion = new Question(savedInstanceState.getIntArray("numbers"),
@@ -61,9 +61,7 @@ public class GameFragment extends Fragment {
                     savedInstanceState.getInt("missingValue"),
                     savedInstanceState.getBoolean("hasMultiplication"),
                     savedInstanceState.getBoolean("hasDivision"));
-            difficulty = (Difficulty) savedInstanceState.getSerializable("difficulty");
-            game = new Game(difficulty,
-                    savedInstanceState.getInt("score"),
+            game = new Game(savedInstanceState.getInt("score"),
                     savedInstanceState.getInt("bombsRemaining"),
                     savedQuestion);
             incorrectGuesses = savedInstanceState.getInt("incorrectGuesses");
@@ -71,11 +69,10 @@ public class GameFragment extends Fragment {
                 bomb.setEnabled(false);
             }
             question.setText(game.displayQuestion());
-        } else {
-            difficulty = Difficulty.MEDIUM;
-            game = new Game(difficulty);
         }
-        bomb.setText(String.format(Locale.getDefault(), getString(R.string.bomb), game.getBombsRemaining()));
+        if (game != null) {
+            bomb.setText(String.format(Locale.getDefault(), getString(R.string.bomb), game.getBombsRemaining()));
+        }
         bomb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -109,7 +106,6 @@ public class GameFragment extends Fragment {
     @Override
     public void onSaveInstanceState(@NonNull Bundle bundle) {
         // Save fragment data
-        bundle.putSerializable("difficulty", difficulty);
         bundle.putInt("incorrectGuesses", incorrectGuesses);
         bundle.putCharSequence("guess", guess.getText());
 
@@ -127,8 +123,8 @@ public class GameFragment extends Fragment {
         bundle.putBoolean("hasDivision", question.hasDivision());
     }
 
-    void showNextQuestion() {
-        game.generateQuestion();
+    void showNextQuestion(Question nextQuestion) {
+        game.setQuestion(nextQuestion);
         question.setText(game.displayQuestion());
         guess.getText().clear();
         incorrectGuesses = 0;
@@ -142,13 +138,13 @@ public class GameFragment extends Fragment {
         return incorrectGuesses;
     }
 
+    void newGame() {
+        game = new Game();
+        bomb.setText(String.format(Locale.getDefault(), getString(R.string.bomb), game.getBombsRemaining()));
+    }
+
     void clear() {
         question.setText("");
         //TODO Hide and disable buttons
-    }
-
-    void setGame(Difficulty difficulty) {
-        this.difficulty = difficulty;
-        game = new Game(difficulty);
     }
 }

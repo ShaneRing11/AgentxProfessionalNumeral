@@ -3,8 +3,12 @@ package au.edu.jcu.cp3406.agentxprofessionalnumeral;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+
+import au.edu.jcu.cp3406.agentxprofessionalnumeral.Game.Difficulty;
+import au.edu.jcu.cp3406.agentxprofessionalnumeral.Game.QuestionBuilder;
 
 public class GameActivity extends AppCompatActivity implements StateListener {
 
@@ -12,7 +16,7 @@ public class GameActivity extends AppCompatActivity implements StateListener {
 
     private StatusFragment statusFragment;
     private GameFragment gameFragment;
-    //TODO move questionBuilder into this activity?
+    private QuestionBuilder questionBuilder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,9 +25,13 @@ public class GameActivity extends AppCompatActivity implements StateListener {
         FragmentManager fragmentManager = getSupportFragmentManager();
         statusFragment = (StatusFragment) fragmentManager.findFragmentById(R.id.statusFragment);
         gameFragment = (GameFragment) fragmentManager.findFragmentById(R.id.gameFragment);
+        Intent intent = getIntent();
+        Log.i("GameActivity", "Difficulty = " + intent.getExtras().get(EXTRA_DIFFICULTY));
+        questionBuilder = new QuestionBuilder((Difficulty) intent.getExtras().get(EXTRA_DIFFICULTY));
         if (savedInstanceState == null) {
             assert gameFragment != null;
-            gameFragment.showNextQuestion();
+            gameFragment.newGame();
+            gameFragment.showNextQuestion(questionBuilder.buildQuestion());
             statusFragment.startTicking();
         }
     }
@@ -33,18 +41,18 @@ public class GameActivity extends AppCompatActivity implements StateListener {
         switch (state) {
             case CORRECT_GUESS:
                 statusFragment.updateScore(gameFragment.updateScore(statusFragment.getTimeBonus()));
-                gameFragment.showNextQuestion();
+                gameFragment.showNextQuestion(questionBuilder.buildQuestion());
                 statusFragment.resetTimeBonus();
                 break;
             case INCORRECT_GUESS:
                 if (gameFragment.getIncorrectGuesses() == 3) {
-                    gameFragment.showNextQuestion();
+                    gameFragment.showNextQuestion(questionBuilder.buildQuestion());
                     statusFragment.resetTimeBonus();
                 }
                 statusFragment.updateDetection(10);
                 break;
             case BOMB_THROWN:
-                gameFragment.showNextQuestion();
+                gameFragment.showNextQuestion(questionBuilder.buildQuestion());
                 statusFragment.updateDetection(5);
                 statusFragment.resetTimeBonus();
                 break;
