@@ -40,16 +40,15 @@ public class ScoresActivity extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
-            String[] difficulties = getResources().getStringArray(R.array.difficulties);
             switch (position) {
                 case 0:
-                    return new ScoreFragment(difficulties[0]);
+                    return new ScoreFragment("easy");
                 case 1:
-                    return new ScoreFragment(difficulties[1]);
+                    return new ScoreFragment("medium");
                 case 2:
-                    return new ScoreFragment(difficulties[2]);
+                    return new ScoreFragment("hard");
                 case 3:
-                    return new ScoreFragment(difficulties[3]);
+                    return new ScoreFragment("expert");
             }
             return null;
         }

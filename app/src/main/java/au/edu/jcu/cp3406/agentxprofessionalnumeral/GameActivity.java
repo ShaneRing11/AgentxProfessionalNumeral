@@ -6,6 +6,7 @@ import androidx.fragment.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
@@ -33,6 +34,7 @@ public class GameActivity extends AppCompatActivity implements StateListener {
         Intent intent = getIntent();
         Difficulty difficulty = (Difficulty) intent.getExtras().get(EXTRA_DIFFICULTY);
         gameOverFragment.setDifficulty(difficulty.name().toLowerCase());
+        Log.i("GameActivity", difficulty.name().toLowerCase());
         questionBuilder = new QuestionBuilder(difficulty);
         if (savedInstanceState == null) {
             fragmentManager.beginTransaction().hide(gameOverFragment).commit();

@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class AgentxDatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "agentx";
-    private static final int DB_VERSION = 2;
+    private static final int DB_VERSION = 1;
 
     AgentxDatabaseHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -28,7 +28,7 @@ public class AgentxDatabaseHelper extends SQLiteOpenHelper {
         // Test data
         String[] names = new String[] {"James", "Daniel", "Aaron", "Lana", "Alistair", "Jason", "Jessie", "Denice", "Amy"};
         int[] scores = new int[] {70, 80, 100, 110, 150, 120, 180, 164, 201};
-        String[] difficulties = new String[] {"Easy", "Hard", "Medium", "Expert", "Medium", "Easy", "Easy", "Hard", "Medium"};
+        String[] difficulties = new String[] {"easy", "hard", "medium", "expert", "medium", "easy", "easy", "hard", "medium"};
         ContentValues scoreValues;
 
         if (oldVersion < 1) {
@@ -37,16 +37,6 @@ public class AgentxDatabaseHelper extends SQLiteOpenHelper {
                     + "SCORE INTEGER, "
                     + "DIFFICULTY TEXT);");
             for (int i = 0; i < names.length; ++i) {
-                scoreValues = new ContentValues();
-                scoreValues.put("NAME", names[i]);
-                scoreValues.put("SCORE", scores[i]);
-                scoreValues.put("DIFFICULTY", difficulties[i]);
-                db.insert("SCORES", null, scoreValues);
-            }
-        }
-
-        if (oldVersion == 1) {
-            for (int i = 0; i < names.length; ++ i) {
                 scoreValues = new ContentValues();
                 scoreValues.put("NAME", names[i]);
                 scoreValues.put("SCORE", scores[i]);

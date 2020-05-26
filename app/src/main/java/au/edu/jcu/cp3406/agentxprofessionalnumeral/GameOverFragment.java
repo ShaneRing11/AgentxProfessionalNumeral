@@ -2,6 +2,7 @@ package au.edu.jcu.cp3406.agentxprofessionalnumeral;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -60,13 +61,13 @@ public class GameOverFragment extends Fragment {
         Button submit = view.findViewById(R.id.submit);
         Button share = view.findViewById(R.id.tweet);
         Button highScores = view.findViewById(R.id.highScores);
-        Button newGame = view.findViewById(R.id.newGame);
+        final Button newGame = view.findViewById(R.id.newGame);
         Button mainMenu = view.findViewById(R.id.mainMenu);
 
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new UpdateScoreTask();
+                new UpdateScoreTask().execute();
             }
         });
         share.setOnClickListener(new View.OnClickListener() {
@@ -78,7 +79,8 @@ public class GameOverFragment extends Fragment {
         highScores.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Open high scores activity
+                Intent intent = new Intent(getContext(), ScoresActivity.class);
+                startActivity(intent);
             }
         });
         newGame.setOnClickListener(new View.OnClickListener() {
@@ -141,7 +143,7 @@ public class GameOverFragment extends Fragment {
         this.difficulty = difficulty;
     }
 
-    private class UpdateScoreTask extends AsyncTask<Integer, Void, Boolean> {
+    private class UpdateScoreTask extends AsyncTask<Void, Void, Boolean> {
 
         private ContentValues scoreValues;
 
@@ -152,14 +154,13 @@ public class GameOverFragment extends Fragment {
             scoreValues.put("DIFFICULTY", difficulty);
         }
 
-        protected Boolean doInBackground(Integer... drinks) {
-            int drinkId = drinks[0];
+        protected Boolean doInBackground(Void... voids) {
             SQLiteOpenHelper agentxDatabaseHelper = new AgentxDatabaseHelper(getContext());
             try {
                 SQLiteDatabase db = agentxDatabaseHelper.getWritableDatabase();
                 db.insert("SCORES", null, scoreValues);
                 db.close();
-                Log.i("GameOverFragment", "Scare added");
+                Log.i("GameOverFragment", "Score added");
                 return true;
             } catch (SQLiteException e) {
                 Log.i("GameOverFragment", "Database update failed");
