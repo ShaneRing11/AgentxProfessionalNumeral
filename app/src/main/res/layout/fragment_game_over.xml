@@ -21,6 +21,12 @@
         android:text="@string/submit_score" />
 
     <Button
+        android:id="@+id/tweet"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="@string/tweet_score" />
+
+    <Button
         android:id="@+id/highScores"
         android:layout_width="match_parent"
         android:layout_height="50dp"

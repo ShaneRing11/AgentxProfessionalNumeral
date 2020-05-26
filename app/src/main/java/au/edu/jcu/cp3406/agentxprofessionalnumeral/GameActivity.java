@@ -31,7 +31,9 @@ public class GameActivity extends AppCompatActivity implements StateListener {
         gameFragment = (GameFragment) fragmentManager.findFragmentById(R.id.gameFragment);
         gameOverFragment = (GameOverFragment) fragmentManager.findFragmentById(R.id.gameOverFragment);
         Intent intent = getIntent();
-        questionBuilder = new QuestionBuilder((Difficulty) intent.getExtras().get(EXTRA_DIFFICULTY));
+        Difficulty difficulty = (Difficulty) intent.getExtras().get(EXTRA_DIFFICULTY);
+        gameOverFragment.setDifficulty(difficulty.name().toLowerCase());
+        questionBuilder = new QuestionBuilder(difficulty);
         if (savedInstanceState == null) {
             fragmentManager.beginTransaction().hide(gameOverFragment).commit();
             assert gameFragment != null;
@@ -67,6 +69,7 @@ public class GameActivity extends AppCompatActivity implements StateListener {
                 fragmentManager.beginTransaction().hide(gameFragment).commit();
                 hideKeyboard();
                 fragmentManager.beginTransaction().show(gameOverFragment).commit();
+                gameOverFragment.setScore(gameFragment.getScore());
                 break;
             case NEW_GAME:
                 fragmentManager.beginTransaction().hide(gameOverFragment).commit();
