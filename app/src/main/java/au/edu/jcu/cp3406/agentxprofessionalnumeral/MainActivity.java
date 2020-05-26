@@ -48,6 +48,8 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
                 break;
             case R.id.highScores:
+                intent = new Intent(this, ScoresActivity.class);
+                startActivity(intent);
                 break;
             case R.id.settings:
                 intent = new Intent(this, SettingsActivity.class);

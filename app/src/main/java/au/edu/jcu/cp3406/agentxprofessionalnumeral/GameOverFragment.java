@@ -1,6 +1,11 @@
 package au.edu.jcu.cp3406.agentxprofessionalnumeral;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
+import android.database.sqlite.SQLiteOpenHelper;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -10,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -60,7 +66,7 @@ public class GameOverFragment extends Fragment {
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Submit high score, show confirmation message and hide elements
+                new UpdateScoreTask();
             }
         });
         share.setOnClickListener(new View.OnClickListener() {
@@ -106,10 +112,12 @@ public class GameOverFragment extends Fragment {
                     try {
                         twitter.updateStatus(String.format(Locale.getDefault(), getString(R.string.format_tweet),
                                 name.getText().toString(), score, difficulty));
-                        Toast.makeText(getView().getContext(), "Score shared", Toast.LENGTH_SHORT).show();
+                        Log.i("GameOverFragment", "Post successful");
                     } catch (TwitterException ignored) {
                         Log.i("GameOverFragment", "Couldn't post tweet");
                     }
+                } else {
+
                 }
             }
         });
@@ -131,5 +139,40 @@ public class GameOverFragment extends Fragment {
 
     void setDifficulty(String difficulty) {
         this.difficulty = difficulty;
+    }
+
+    private class UpdateScoreTask extends AsyncTask<Integer, Void, Boolean> {
+
+        private ContentValues scoreValues;
+
+        protected void onPreExecute() {
+            scoreValues = new ContentValues();
+            scoreValues.put("NAME", name.getText().toString());
+            scoreValues.put("SCORE", score);
+            scoreValues.put("DIFFICULTY", difficulty);
+        }
+
+        protected Boolean doInBackground(Integer... drinks) {
+            int drinkId = drinks[0];
+            SQLiteOpenHelper agentxDatabaseHelper = new AgentxDatabaseHelper(getContext());
+            try {
+                SQLiteDatabase db = agentxDatabaseHelper.getWritableDatabase();
+                db.insert("SCORES", null, scoreValues);
+                db.close();
+                Log.i("GameOverFragment", "Scare added");
+                return true;
+            } catch (SQLiteException e) {
+                Log.i("GameOverFragment", "Database update failed");
+                return false;
+            }
+        }
+
+        protected void onPostExecute(Boolean success) {
+            if (!success) {
+                Toast toast = Toast.makeText(getContext(),
+                        "Database unavailable", Toast.LENGTH_SHORT);
+                toast.show();
+            }
+        }
     }
 }
