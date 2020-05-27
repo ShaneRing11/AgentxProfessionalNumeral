@@ -5,18 +5,16 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
-import java.util.Locale;
+import androidx.fragment.app.Fragment;
+
+import java.util.Objects;
 
 
 /**
@@ -25,10 +23,8 @@ import java.util.Locale;
 public class ScoreFragment extends Fragment {
 
     private String difficulty;
-    private SQLiteDatabase db;
-    private Cursor cursor;
 
-    public ScoreFragment(String difficulty) {
+    ScoreFragment(String difficulty) {
         this.difficulty = difficulty;
     }
 
@@ -41,8 +37,8 @@ public class ScoreFragment extends Fragment {
         ListView listScores = view.findViewById(R.id.listScores);
         SQLiteOpenHelper agentxDatabaseHelper = new AgentxDatabaseHelper(getContext());
         try {
-            db = agentxDatabaseHelper.getReadableDatabase();
-            cursor = db.query("SCORES",
+            SQLiteDatabase db = agentxDatabaseHelper.getReadableDatabase();
+            Cursor cursor = db.query("SCORES",
                     new String[]{"NAME", "SCORE"},
                     "DIFFICULTY = ?",
                     new String[]{difficulty}
@@ -51,12 +47,15 @@ public class ScoreFragment extends Fragment {
             cursor.moveToFirst();
             String[] scoresList = new String[cursor.getCount()];
             for (int i = 0; i < scoresList.length; ++i) {
+                // TODO improve score formatting
                 scoresList[i] = String.format("%s: %50d",
                         cursor.getString(0),
                         cursor.getInt(1));
                 cursor.moveToNext();
             }
-            ArrayAdapter<String> scoresAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1);
+            cursor.close();
+            db.close();
+            ArrayAdapter<String> scoresAdapter = new ArrayAdapter<>(Objects.requireNonNull(getContext()), android.R.layout.simple_list_item_1);
             scoresAdapter.addAll(scoresList);
             listScores.setAdapter(scoresAdapter);
         } catch (SQLException e) {

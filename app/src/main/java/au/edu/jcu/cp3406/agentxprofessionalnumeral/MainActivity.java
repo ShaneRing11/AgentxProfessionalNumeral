@@ -1,12 +1,12 @@
 package au.edu.jcu.cp3406.agentxprofessionalnumeral;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import au.edu.jcu.cp3406.agentxprofessionalnumeral.Game.Difficulty;
 

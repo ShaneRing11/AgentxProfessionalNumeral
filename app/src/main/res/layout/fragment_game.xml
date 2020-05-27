@@ -19,7 +19,8 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:src="@drawable/low_alert"/>
+            android:src="@drawable/low_alert"
+            android:contentDescription="@string/low_alert"/>
 
         <ImageView
             android:id="@+id/mediumAlert"
@@ -27,7 +28,8 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:visibility="invisible"
-            android:src="@drawable/medium_alert"/>
+            android:src="@drawable/medium_alert"
+            android:contentDescription="@string/medium_alert"/>
 
         <ImageView
             android:id="@+id/highAlert"
@@ -35,7 +37,8 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:visibility="invisible"
-            android:src="@drawable/high_alert"/>
+            android:src="@drawable/high_alert"
+            android:contentDescription="@string/high_alert"/>
     </LinearLayout>
 
 
@@ -54,21 +57,24 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:src="@drawable/bomb" />
+            android:src="@drawable/bomb"
+            android:contentDescription="@string/smoke_bomb"/>
 
         <ImageView
             android:id="@+id/bombTwo"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:src="@drawable/bomb" />
+            android:src="@drawable/bomb"
+            android:contentDescription="@string/smoke_bomb"/>
 
         <ImageView
             android:id="@+id/bombThree"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:src="@drawable/bomb" />
+            android:src="@drawable/bomb"
+            android:contentDescription="@string/smoke_bomb" />
     </LinearLayout>
 
 
@@ -96,7 +102,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/bombPouch"
-        app:layout_constraintTop_toBottomOf="@+id/alert" />
+        app:layout_constraintTop_toBottomOf="@+id/alert"
+        android:autofillHints="" />
 
 
     <Button

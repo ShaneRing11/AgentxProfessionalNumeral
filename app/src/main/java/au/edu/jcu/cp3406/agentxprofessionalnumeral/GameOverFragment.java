@@ -8,9 +8,6 @@ import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.AsyncTask;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,7 +16,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+
 import java.util.Locale;
+import java.util.Objects;
 
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
@@ -51,7 +52,7 @@ public class GameOverFragment extends Fragment {
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         listener = (StateListener) context;
     }
@@ -152,20 +153,21 @@ public class GameOverFragment extends Fragment {
             }
         });
     }
+
     private boolean isAuthorised() {
         try {
             user = twitter.verifyCredentials();
             Log.i("GameOverFragment", "verified");
             return true;
         } catch (Exception e) {
-            Log.i("GameOverFragment", e.getMessage());
+            Log.i("GameOverFragment", Objects.requireNonNull(e.getMessage()));
             return false;
         }
     }
 
     private void toggleButtonsVisible() {
-        View[] submissionViews = new View[] {name, submit};
-        View[] menuViews = new  View[] {share, highScores, newGame, mainMenu};
+        View[] submissionViews = new View[]{name, submit};
+        View[] menuViews = new View[]{share, highScores, newGame, mainMenu};
 
         if (scoreSubmitted) {
             for (View view : menuViews) {

@@ -1,14 +1,16 @@
 package au.edu.jcu.cp3406.agentxprofessionalnumeral;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+
+import java.util.Objects;
 
 import au.edu.jcu.cp3406.agentxprofessionalnumeral.Game.Difficulty;
 import au.edu.jcu.cp3406.agentxprofessionalnumeral.Game.QuestionBuilder;
@@ -32,7 +34,8 @@ public class GameActivity extends AppCompatActivity implements StateListener {
         gameFragment = (GameFragment) fragmentManager.findFragmentById(R.id.gameFragment);
         gameOverFragment = (GameOverFragment) fragmentManager.findFragmentById(R.id.gameOverFragment);
         Intent intent = getIntent();
-        Difficulty difficulty = (Difficulty) intent.getExtras().get(EXTRA_DIFFICULTY);
+        Difficulty difficulty = (Difficulty) Objects.requireNonNull(intent.getExtras()).get(EXTRA_DIFFICULTY);
+        assert difficulty != null;
         gameOverFragment.setDifficulty(difficulty.name().toLowerCase());
         Log.i("GameActivity", difficulty.name().toLowerCase());
         questionBuilder = new QuestionBuilder(difficulty);
@@ -47,6 +50,8 @@ public class GameActivity extends AppCompatActivity implements StateListener {
         }
     }
 
+    //TODO add sound effects
+    //TODO create horizontal layouts
     @Override
     public void onUpdate(State state) {
         switch (state) {
@@ -87,10 +92,12 @@ public class GameActivity extends AppCompatActivity implements StateListener {
         }
     }
 
+    //TODO fix this playing up
     private void hideKeyboard() {
         View view = this.getCurrentFocus();
         if (view != null) {
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            assert imm != null;
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }

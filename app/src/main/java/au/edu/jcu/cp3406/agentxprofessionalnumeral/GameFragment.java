@@ -1,11 +1,7 @@
 package au.edu.jcu.cp3406.agentxprofessionalnumeral;
 
 
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-
 import android.content.Context;
-import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,6 +14,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 
 import au.edu.jcu.cp3406.agentxprofessionalnumeral.Game.Game;
 import au.edu.jcu.cp3406.agentxprofessionalnumeral.Game.Question;
@@ -43,7 +42,7 @@ public class GameFragment extends Fragment {
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@androidx.annotation.NonNull Context context) {
         super.onAttach(context);
         listener = (StateListener) context;
     }
@@ -58,10 +57,10 @@ public class GameFragment extends Fragment {
         guess = view.findViewById(R.id.guess);
         Button submit = view.findViewById(R.id.submit);
         bombPouch = view.findViewById(R.id.bombPouch);
-        bombs = new ImageView[] {view.findViewById(R.id.bombOne),
+        bombs = new ImageView[]{view.findViewById(R.id.bombOne),
                 view.findViewById(R.id.bombTwo),
                 view.findViewById(R.id.bombThree)};
-        alerts = new ImageView[] {view.findViewById(R.id.lowAlert),
+        alerts = new ImageView[]{view.findViewById(R.id.lowAlert),
                 view.findViewById(R.id.mediumAlert),
                 view.findViewById(R.id.highAlert)};
         if (savedInstanceState != null) {
@@ -99,10 +98,9 @@ public class GameFragment extends Fragment {
                 bombPouch.getLocationOnScreen(bombsPosition);
                 float x = event.getX();
                 float y = event.getY();
-                String action = "";
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
-                        downPosition = new float[] {x, y};
+                        downPosition = new float[]{x, y};
                         break;
                     case MotionEvent.ACTION_UP:
                         if (downPosition[0] >= bombsPosition[0] - fragPosition[0] && downPosition[1] >= bombsPosition[1] - fragPosition[1]) {
@@ -181,6 +179,7 @@ public class GameFragment extends Fragment {
     void newGame() {
         game = new Game();
     }
+
     int getScore() {
         return game.getScore();
     }

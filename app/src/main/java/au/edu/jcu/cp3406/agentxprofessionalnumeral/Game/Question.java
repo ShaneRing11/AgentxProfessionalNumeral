@@ -37,7 +37,7 @@ public class Question {
     }
 
     // Builds and returns a string representation of the question, replacing the missing value with x
-    public String display() {
+     String display() {
          StringBuilder questionString = new StringBuilder();
          for (int i = 0; i < operations.length; ++i) {
              if (i == missingValue) {

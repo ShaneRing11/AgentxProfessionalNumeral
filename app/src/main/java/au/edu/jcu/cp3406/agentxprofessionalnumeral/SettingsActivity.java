@@ -1,13 +1,13 @@
 package au.edu.jcu.cp3406.agentxprofessionalnumeral;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.annotation.NonNull;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Spinner;
 import android.widget.Switch;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.Objects;
 

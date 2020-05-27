@@ -2,14 +2,14 @@ package au.edu.jcu.cp3406.agentxprofessionalnumeral;
 
 import android.content.Context;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 
 import java.util.Locale;
 
@@ -33,7 +33,7 @@ public class StatusFragment extends Fragment {
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         listener = (StateListener) context;
     }
@@ -85,7 +85,7 @@ public class StatusFragment extends Fragment {
         bundle.putBoolean("gameRunning", gameRunning);
     }
 
-    public void startTicking() {
+    void startTicking() {
 
         tick = new Runnable() {
             @Override
@@ -117,6 +117,7 @@ public class StatusFragment extends Fragment {
             listener.onUpdate(State.GAME_OVER);
         }
     }
+
     void resetTimeBonus() {
         timeBonus = 15;
     }

@@ -1,14 +1,14 @@
 package au.edu.jcu.cp3406.agentxprofessionalnumeral;
 
+import android.os.Bundle;
+import android.widget.ShareActionProvider;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
-
-import android.os.Bundle;
-import android.widget.ShareActionProvider;
 
 import com.google.android.material.tabs.TabLayout;
 
@@ -29,7 +29,7 @@ public class ScoresActivity extends AppCompatActivity {
 
     private class SectionsPagerAdapter extends FragmentPagerAdapter {
 
-        public SectionsPagerAdapter(FragmentManager fm) {
+        SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
         }
 
@@ -38,6 +38,7 @@ public class ScoresActivity extends AppCompatActivity {
             return 4;
         }
 
+        @NonNull
         @Override
         public Fragment getItem(int position) {
             switch (position) {
@@ -50,7 +51,7 @@ public class ScoresActivity extends AppCompatActivity {
                 case 3:
                     return new ScoreFragment("expert");
             }
-            return null;
+            return new ScoreFragment("easy");
         }
 
         @Override

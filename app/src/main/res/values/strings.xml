@@ -1,8 +1,5 @@
 <resources>
     <string name="app_name">AgentxProfessionalNumeral</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title">Agent X</string>
     <string name="subtitle">Professional Numeral</string>
     <string name="play">Play</string>
@@ -27,6 +24,10 @@
     <string name="game_over">Game Over</string>
     <string name="score_shared">Score shared</string>
     <string name="share_failed">Unable to share</string>
+    <string name="smoke_bomb">Smoke bomb</string>
+    <string name="high_alert">High alert</string>
+    <string name="medium_alert">Medium alert</string>
+    <string name="low_alert">Low alert</string>
     <array name="difficulties">
         <item>Easy</item>
         <item>Medium</item>
