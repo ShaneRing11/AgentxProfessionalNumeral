@@ -25,6 +25,8 @@
     <string name="tweet_score">Tweet score</string>
     <string name="format_tweet">%s scored %d points for their raid on an %s level base. \n#AgentXProNumeral</string>
     <string name="game_over">Game Over</string>
+    <string name="score_shared">Score shared</string>
+    <string name="share_failed">Unable to share</string>
     <array name="difficulties">
         <item>Easy</item>
         <item>Medium</item>

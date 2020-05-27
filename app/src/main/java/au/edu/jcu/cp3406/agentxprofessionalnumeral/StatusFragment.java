@@ -6,7 +6,6 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -92,7 +91,6 @@ public class StatusFragment extends Fragment {
             @Override
             public void run() {
                 updateDetection(1);
-                Log.i("StatusFragment", "ticking");
                 if (timeBonus > 0) {
                     --timeBonus;
                 }

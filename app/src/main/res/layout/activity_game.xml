@@ -13,8 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="100dp"
         tools:layout="@layout/fragment_status"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/gameFragment"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <fragment
         android:id="@+id/gameFragment"
