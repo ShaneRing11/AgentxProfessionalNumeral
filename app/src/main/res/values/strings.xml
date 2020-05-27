@@ -17,13 +17,14 @@
     <string name="disguise">Disguise!</string>
     <string name="bomb">Smoke bomb: %d</string>
     <string name="no_guess">No guess entered</string>
-    <string name="game_over">They\'ve found you, get out of there!</string>
+    <string name="spotted">They\'ve found you, get out of there!</string>
     <string name="name_hint">Enter agent codename</string>
     <string name="submit_score">Submit score</string>
     <string name="main_menu">Main menu</string>
     <string name="new_game">New game</string>
     <string name="tweet_score">Tweet score</string>
     <string name="format_tweet">%s scored %d points for their raid on an %s level base. \n#AgentXProNumeral</string>
+    <string name="game_over">Game Over</string>
     <array name="difficulties">
         <item>Easy</item>
         <item>Medium</item>

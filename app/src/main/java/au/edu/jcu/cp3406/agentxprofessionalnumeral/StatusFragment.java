@@ -57,7 +57,7 @@ public class StatusFragment extends Fragment {
             gameRunning = savedInstanceState.getBoolean("gameRunning");
         }
         if (detection > 100) {
-            message.setText(getString(R.string.game_over));
+            message.setText(getString(R.string.spotted));
         } else {
             message.setText(String.format(Locale.getDefault(), getString(R.string.detection), detection));
         }
@@ -114,7 +114,7 @@ public class StatusFragment extends Fragment {
             }
         } else {
             gameRunning = false;
-            message.setText(R.string.game_over);
+            message.setText(R.string.spotted);
             handler.removeCallbacks(tick);
             listener.onUpdate(State.GAME_OVER);
         }

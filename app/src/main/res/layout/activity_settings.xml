@@ -1,36 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".SettingsActivity">
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/difficulty" />
+        android:id="@+id/difficultyLabel"
+        android:layout_width="100dp"
+        android:layout_height="35dp"
+        android:text="@string/difficulty"
+        android:textSize="20sp"
+        android:layout_margin="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <Spinner
         android:id="@+id/difficulty"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:entries="@array/difficulties" />
+        android:layout_width="130dp"
+        android:layout_height="35dp"
+        android:entries="@array/difficulties"
+        android:layout_margin="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/sound" />
+        android:layout_width="100dp"
+        android:layout_height="35dp"
+        android:text="@string/sound"
+        android:textSize="20sp"
+        android:layout_margin="10dp"
+        app:layout_constraintTop_toBottomOf="@id/difficultyLabel"
+        app:layout_constraintStart_toStartOf="parent"/>
 
     <Switch
         android:id="@+id/playSound"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_width="130dp"
+        android:layout_height="35dp"
+        android:layout_margin="10dp"
+        android:paddingStart="0dp"
+        android:paddingEnd="45dp"
+        android:scaleX="1.5"
+        android:scaleY="1.5"
+        app:layout_constraintTop_toBottomOf="@+id/difficulty"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
         android:text="@string/save"
-        android:onClick="saveClicked" />
-</LinearLayout>
+        android:onClick="saveClicked"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

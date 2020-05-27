@@ -50,7 +50,7 @@ public class GameFragment extends Fragment {
         final View view = inflater.inflate(R.layout.fragment_game, container, false);
         question = view.findViewById(R.id.question);
         guess = view.findViewById(R.id.guess);
-        bomb = view.findViewById(R.id.bomb);
+//        bomb = view.findViewById(R.id.bomb);
         Button submit = view.findViewById(R.id.submit);
         if (savedInstanceState != null) {
             guess.setText(savedInstanceState.getCharSequence("guess"));
@@ -70,9 +70,9 @@ public class GameFragment extends Fragment {
             question.setText(game.displayQuestion());
         }
         if (game != null) {
-            bomb.setText(String.format(Locale.getDefault(), getString(R.string.bomb), game.getBombsRemaining()));
+//            bomb.setText(String.format(Locale.getDefault(), getString(R.string.bomb), game.getBombsRemaining()));
         }
-        bomb.setOnClickListener(new View.OnClickListener() {
+        /*bomb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 game.useBomb();
@@ -82,7 +82,7 @@ public class GameFragment extends Fragment {
                 }
                 listener.onUpdate(State.BOMB_THROWN);
             }
-        });
+        });*/
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -139,7 +139,7 @@ public class GameFragment extends Fragment {
 
     void newGame() {
         game = new Game();
-        bomb.setText(String.format(Locale.getDefault(), getString(R.string.bomb), game.getBombsRemaining()));
+//        bomb.setText(String.format(Locale.getDefault(), getString(R.string.bomb), game.getBombsRemaining()));
     }
 
     int getScore() {
