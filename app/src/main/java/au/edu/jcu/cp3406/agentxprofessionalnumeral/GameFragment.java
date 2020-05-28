@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -18,6 +19,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import java.util.Objects;
+
 import au.edu.jcu.cp3406.agentxprofessionalnumeral.Game.Game;
 import au.edu.jcu.cp3406.agentxprofessionalnumeral.Game.Question;
 
@@ -27,6 +30,7 @@ import au.edu.jcu.cp3406.agentxprofessionalnumeral.Game.Question;
  */
 public class GameFragment extends Fragment {
 
+    private View view;
     private StateListener listener;
     private TextView question;
     private EditText guess;
@@ -52,7 +56,7 @@ public class GameFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        final View view = inflater.inflate(R.layout.fragment_game, container, false);
+        view = inflater.inflate(R.layout.fragment_game, container, false);
         question = view.findViewById(R.id.question);
         guess = view.findViewById(R.id.guess);
         Button submit = view.findViewById(R.id.submit);
@@ -166,6 +170,12 @@ public class GameFragment extends Fragment {
         incorrectGuesses = 0;
         alerts[1].setVisibility(View.INVISIBLE);
         alerts[2].setVisibility(View.INVISIBLE);
+    }
+
+    void hideKeyboard() {
+        InputMethodManager imm = (InputMethodManager) Objects.requireNonNull(getContext()).getSystemService(Context.INPUT_METHOD_SERVICE);
+        assert imm != null;
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
     int updateScore(int timeBonus) {

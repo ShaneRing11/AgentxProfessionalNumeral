@@ -66,7 +66,6 @@ public class GameActivity extends AppCompatActivity implements StateListener {
         }
     }
 
-    //TODO create horizontal layouts
     @Override
     public void onUpdate(State state) {
         switch (state) {
@@ -105,13 +104,12 @@ public class GameActivity extends AppCompatActivity implements StateListener {
                     soundPool.play(soundIds[4], 1, 1, 1, 0, 1);
                 }
                 fragmentManager.beginTransaction().hide(gameFragment).commit();
-                hideKeyboard();
+                gameFragment.hideKeyboard();
                 fragmentManager.beginTransaction().show(gameOverFragment).commit();
                 gameOverFragment.setScore(gameFragment.getScore());
                 break;
             case NEW_GAME:
                 fragmentManager.beginTransaction().hide(gameOverFragment).commit();
-//                hideKeyboard();
                 fragmentManager.beginTransaction().show(gameFragment).commit();
                 gameFragment.newGame();
                 statusFragment.reset();
@@ -120,16 +118,6 @@ public class GameActivity extends AppCompatActivity implements StateListener {
                 break;
             case MAIN_MENU:
                 finish();
-        }
-    }
-
-    //TODO fix this playing up
-    private void hideKeyboard() {
-        View view = this.getCurrentFocus();
-        if (view != null) {
-            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            assert imm != null;
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
 }

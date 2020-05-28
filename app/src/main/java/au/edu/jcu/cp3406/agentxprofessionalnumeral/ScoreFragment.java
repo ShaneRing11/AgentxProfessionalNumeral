@@ -22,18 +22,16 @@ import java.util.Objects;
  */
 public class ScoreFragment extends Fragment {
 
-    private String difficulty;
-
-    ScoreFragment(String difficulty) {
-        this.difficulty = difficulty;
+    public ScoreFragment() {
+        // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_score, container, false);
+        assert getArguments() != null;
         ListView listScores = view.findViewById(R.id.listScores);
         SQLiteOpenHelper agentxDatabaseHelper = new AgentxDatabaseHelper(getContext());
         try {
@@ -41,8 +39,8 @@ public class ScoreFragment extends Fragment {
             Cursor cursor = db.query("SCORES",
                     new String[]{"NAME", "SCORE"},
                     "DIFFICULTY = ?",
-                    new String[]{difficulty}
-                    , null, null,
+                    new String[]{getArguments().getString("difficulty")},
+                    null, null,
                     "SCORE DESC");
             cursor.moveToFirst();
             String[] scoresList = new String[cursor.getCount()];

@@ -9,10 +9,12 @@
 
     <LinearLayout
         android:id="@+id/alert"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
         android:background="@drawable/outline"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/bombPouch">
 
         <ImageView
             android:id="@+id/lowAlert"
@@ -44,13 +46,14 @@
 
     <LinearLayout
         android:id="@+id/bombPouch"
-        android:layout_width="120dp"
+        android:layout_width="150dp"
         android:layout_height="0dp"
         android:background="@drawable/outline"
         android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/alert">
+        >
 
         <ImageView
             android:id="@+id/bombOne"
@@ -82,13 +85,14 @@
         android:id="@+id/question"
         android:layout_width="0dp"
         android:layout_height="60dp"
-        android:gravity="center"
-        android:textSize="20sp"
         android:layout_margin="10dp"
+        android:layout_marginBottom="12dp"
+        android:gravity="center"
+        android:textSize="30sp"
         app:layout_constraintTop_toBottomOf="@+id/alert"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/guess"
         app:layout_constraintEnd_toStartOf="@+id/bombPouch"
-        app:layout_constraintBottom_toTopOf="@+id/guess" />
+        app:layout_constraintStart_toStartOf="parent"/>
 
     <EditText
         android:id="@+id/guess"
@@ -108,7 +112,7 @@
 
     <Button
         android:id="@+id/submit"
-        android:layout_width="150dp"
+        android:layout_width="300dp"
         android:layout_height="60dp"
         android:text="@string/disguise"
         app:layout_constraintTop_toBottomOf="@id/guess"

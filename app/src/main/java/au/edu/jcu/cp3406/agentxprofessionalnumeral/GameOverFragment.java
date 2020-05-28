@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -33,6 +34,7 @@ import twitter4j.User;
  */
 public class GameOverFragment extends Fragment {
 
+    private View view;
     private StateListener listener;
     private EditText name;
     private Button submit;
@@ -62,7 +64,7 @@ public class GameOverFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        final View view = inflater.inflate(R.layout.fragment_game_over, container, false);
+        view = inflater.inflate(R.layout.fragment_game_over, container, false);
 
         name = view.findViewById(R.id.name);
         submit = view.findViewById(R.id.submit);

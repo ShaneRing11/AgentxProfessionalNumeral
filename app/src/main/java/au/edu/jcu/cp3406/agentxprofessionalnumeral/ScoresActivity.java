@@ -18,6 +18,7 @@ public class ScoresActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //TODO fix crash on rotation
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scores);
         SectionsPagerAdapter pagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
@@ -41,17 +42,35 @@ public class ScoresActivity extends AppCompatActivity {
         @NonNull
         @Override
         public Fragment getItem(int position) {
+            ScoreFragment fragment;
+            Bundle args;
             switch (position) {
                 case 0:
-                    return new ScoreFragment("easy");
+                    args = new Bundle();
+                    args.putString("difficulty", "easy");
+                    fragment = new ScoreFragment();
+                    fragment.setArguments(args);
+                    return fragment;
                 case 1:
-                    return new ScoreFragment("medium");
+                    args = new Bundle();
+                    args.putString("difficulty", "medium");
+                    fragment = new ScoreFragment();
+                    fragment.setArguments(args);
+                    return fragment;
                 case 2:
-                    return new ScoreFragment("hard");
+                    args = new Bundle();
+                    args.putString("difficulty", "hard");
+                    fragment = new ScoreFragment();
+                    fragment.setArguments(args);
+                    return fragment;
                 case 3:
-                    return new ScoreFragment("expert");
+                    args = new Bundle();
+                    args.putString("difficulty", "expert");
+                    fragment = new ScoreFragment();
+                    fragment.setArguments(args);
+                    return fragment;
             }
-            return new ScoreFragment("easy");
+            return new ScoreFragment();
         }
 
         @Override
