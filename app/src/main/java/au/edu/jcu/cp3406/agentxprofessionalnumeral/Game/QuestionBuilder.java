@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
+/**
+* Used to generate random questions for games
+*/
 public class QuestionBuilder {
 
     private Difficulty difficulty;

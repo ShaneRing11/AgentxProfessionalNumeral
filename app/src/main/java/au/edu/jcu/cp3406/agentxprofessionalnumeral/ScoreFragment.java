@@ -14,11 +14,12 @@ import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
+import java.util.Locale;
 import java.util.Objects;
 
 
 /**
- * A simple {@link Fragment} subclass.
+ * A fragment that displays a list of scores for a single difficulty
  */
 public class ScoreFragment extends Fragment {
 
@@ -33,6 +34,8 @@ public class ScoreFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_score, container, false);
         assert getArguments() != null;
         ListView listScores = view.findViewById(R.id.listScores);
+
+        // Query the database for a list of scores matching the difficulty and display them
         SQLiteOpenHelper agentxDatabaseHelper = new AgentxDatabaseHelper(getContext());
         try {
             SQLiteDatabase db = agentxDatabaseHelper.getReadableDatabase();
@@ -42,18 +45,23 @@ public class ScoreFragment extends Fragment {
                     new String[]{getArguments().getString("difficulty")},
                     null, null,
                     "SCORE DESC");
-            cursor.moveToFirst();
+//            cursor.moveToFirst();
+
+            // Build an array of scores from the selection selection
             String[] scoresList = new String[cursor.getCount()];
             for (int i = 0; i < scoresList.length; ++i) {
-                // TODO improve score formatting
-                scoresList[i] = String.format("%s: %50d",
+                scoresList[i] = String.format(Locale.getDefault(),
+                        "%-50s%3d",
                         cursor.getString(0),
                         cursor.getInt(1));
                 cursor.moveToNext();
             }
+            // Close the database
             cursor.close();
             db.close();
-            ArrayAdapter<String> scoresAdapter = new ArrayAdapter<>(Objects.requireNonNull(getContext()), android.R.layout.simple_list_item_1);
+
+            // Add the array to the ArrayAdapter
+            ArrayAdapter<String> scoresAdapter = new ArrayAdapter<>(Objects.requireNonNull(getContext()), R.layout.leaderboard_item);
             scoresAdapter.addAll(scoresList);
             listScores.setAdapter(scoresAdapter);
         } catch (SQLException e) {

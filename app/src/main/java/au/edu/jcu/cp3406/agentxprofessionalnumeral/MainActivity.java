@@ -10,6 +10,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import au.edu.jcu.cp3406.agentxprofessionalnumeral.Game.Difficulty;
 
+/**
+ * Activity containing the main menu of the app
+ */
 public class MainActivity extends AppCompatActivity {
 
     public static final String EXTRA_DIFFICULTY = "MEDIUM";
@@ -37,21 +40,23 @@ public class MainActivity extends AppCompatActivity {
         outState.putBoolean("playSound", playSound);
     }
 
+    // Gets the button that was clicked and opens the relevant activity
     public void buttonClicked(View view) {
         int id = view.getId();
         Intent intent;
         switch (id) {
-            case R.id.play:
+            case R.id.play: // Starts a new game
                 intent = new Intent(this, GameActivity.class);
                 intent.putExtra("playSound", playSound);
                 intent.putExtra(GameActivity.EXTRA_DIFFICULTY, difficulty);
                 startActivity(intent);
                 break;
-            case R.id.highScores:
+            case R.id.highScores: // Opens the high score screen
                 intent = new Intent(this, ScoresActivity.class);
+                intent.putExtra(ScoresActivity.EXTRA_DIFFICULTY, difficulty);
                 startActivity(intent);
                 break;
-            case R.id.settings:
+            case R.id.settings: // Opens the setting menu
                 intent = new Intent(this, SettingsActivity.class);
                 intent.putExtra("playSound", playSound);
                 intent.putExtra(SettingsActivity.EXTRA_DIFFICULTY, difficulty);

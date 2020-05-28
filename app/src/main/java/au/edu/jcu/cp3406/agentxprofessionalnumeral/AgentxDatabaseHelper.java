@@ -5,6 +5,9 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+/**
+* Manages database changes between versions
+*/
 public class AgentxDatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "agentx";
@@ -32,10 +35,12 @@ public class AgentxDatabaseHelper extends SQLiteOpenHelper {
         ContentValues scoreValues;
 
         if (oldVersion < 1) {
+            // Create the scores table
             db.execSQL("CREATE TABLE SCORES (_id INTEGER PRIMARY KEY AUTOINCREMENT,"
                     + " NAME TEXT, "
                     + "SCORE INTEGER, "
                     + "DIFFICULTY TEXT);");
+            // Add the test data to the table
             for (int i = 0; i < names.length; ++i) {
                 scoreValues = new ContentValues();
                 scoreValues.put("NAME", names[i]);

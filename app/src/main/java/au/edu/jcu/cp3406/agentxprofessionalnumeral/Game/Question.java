@@ -4,6 +4,9 @@ import android.util.Log;
 
 import java.util.Arrays;
 
+/**
+ * Holds information about a question and functions to check guesses and display he question
+ */
 public class Question {
 
     private int[] numbers; // Numbers on the LHS of the equation
@@ -40,11 +43,13 @@ public class Question {
      String display() {
          StringBuilder questionString = new StringBuilder();
          for (int i = 0; i < operations.length; ++i) {
+             // Append x if the current number is the missing value, otherwise append the number
              if (i == missingValue) {
                  questionString.append("x");
              } else {
                  questionString.append(numbers[i]);
              }
+             // Append the operation to the right of the number
              String operationString = "";
              switch (operations[i]) {
                  case 0:
@@ -62,12 +67,14 @@ public class Question {
              }
              questionString.append(operationString);
          }
+         // Append either the final number or x if it is the missing value and add equals to finish LHS
          if (numbers.length - 1 == missingValue) {
              questionString.append("x = ");
          } else {
              questionString.append(numbers[numbers.length - 1]).append(" = ");
          }
-        if (numbers.length == missingValue) {
+        // Append x or final number as RHS
+         if (numbers.length == missingValue) {
             questionString.append("x");
         } else {
             questionString.append(result);

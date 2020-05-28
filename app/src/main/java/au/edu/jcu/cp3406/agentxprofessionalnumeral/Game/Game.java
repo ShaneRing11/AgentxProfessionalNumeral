@@ -1,5 +1,8 @@
 package au.edu.jcu.cp3406.agentxprofessionalnumeral.Game;
 
+/**
+ * Object containing game information and current question
+ */
 public class Game {
 
     private Question question;
@@ -18,13 +21,16 @@ public class Game {
     }
 
     public int updateScore(int bonus) {
+        // Add the time bonus to the number of operations to get the base score
         int points = question.getLength() + bonus;
+        // Modify base score based on which operations are present
         if (question.hasMultiplication()) {
             points *= 2;
         }
         if (question.hasDivision()) {
             points *= 2;
         }
+        // Half the score if the RHS is x as question is easier to answer
         if (question.resultIsX()) {
             points /= 2;
         }

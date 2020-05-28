@@ -46,6 +46,7 @@ public class StatusFragment extends Fragment {
         score = view.findViewById(R.id.score);
         message = view.findViewById(R.id.message);
         handler = new Handler();
+
         if (savedInstanceState == null) {
             detection = 0;
             timeBonus = 15;
@@ -55,6 +56,7 @@ public class StatusFragment extends Fragment {
             timeBonus = savedInstanceState.getInt("timeBonus");
             gameRunning = savedInstanceState.getBoolean("gameRunning");
         }
+        // Set the detection status text
         if (detection > 100) {
             message.setText(getString(R.string.spotted));
         } else {
@@ -65,6 +67,7 @@ public class StatusFragment extends Fragment {
 
     @Override
     public void onPause() {
+        // Stop the thread to avoid multiple ticks at the same time
         handler.removeCallbacks(tick);
         gameRunning = detection < 100;
         super.onPause();
@@ -85,8 +88,8 @@ public class StatusFragment extends Fragment {
         bundle.putBoolean("gameRunning", gameRunning);
     }
 
+    // Function that starts a thread controlling detection and time bonuses
     void startTicking() {
-
         tick = new Runnable() {
             @Override
             public void run() {
@@ -104,6 +107,7 @@ public class StatusFragment extends Fragment {
         score.setText(String.format(Locale.getDefault(), getString(R.string.score), newScore));
     }
 
+    // Updates the detection value and checks whether the game needs to end
     void updateDetection(int addedDetection) {
         detection += addedDetection;
         if (detection < 100) {
@@ -111,6 +115,7 @@ public class StatusFragment extends Fragment {
                 message.setText(String.format(Locale.getDefault(), getString(R.string.detection), detection));
             }
         } else {
+            // End the game
             gameRunning = false;
             message.setText(R.string.spotted);
             handler.removeCallbacks(tick);
@@ -126,6 +131,7 @@ public class StatusFragment extends Fragment {
         return timeBonus;
     }
 
+    // Resets the display to prepare for a new game
     void reset() {
         detection = 0;
         timeBonus = 15;

@@ -67,8 +67,11 @@ public class GameFragment extends Fragment {
         alerts = new ImageView[]{view.findViewById(R.id.lowAlert),
                 view.findViewById(R.id.mediumAlert),
                 view.findViewById(R.id.highAlert)};
+
+        // Load the previous game state if it is saved
         if (savedInstanceState != null) {
             guess.setText(savedInstanceState.getCharSequence("guess"));
+            // Recreate the current question
             Question savedQuestion = new Question(savedInstanceState.getIntArray("numbers"),
                     savedInstanceState.getIntArray("operations"),
                     savedInstanceState.getInt("result"),
@@ -93,25 +96,32 @@ public class GameFragment extends Fragment {
                 }
             }
         }
+
+        // Set touch listener to detect bomb throws
         view.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+                // Get the location of this fragment and the bomb pouch
                 int[] fragPosition = new int[2];
                 view.getLocationOnScreen(fragPosition);
                 int[] bombsPosition = new int[2];
                 bombPouch.getLocationOnScreen(bombsPosition);
+
                 float x = event.getX();
                 float y = event.getY();
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
-                        downPosition = new float[]{x, y};
+                        downPosition = new float[]{x, y}; // Record the start position of the motion
                         break;
                     case MotionEvent.ACTION_UP:
+                        // Check that the start of the motion happened within the bounds of the bomb pouch
                         if (downPosition[0] >= bombsPosition[0] - fragPosition[0] && downPosition[1] >= bombsPosition[1] - fragPosition[1]) {
+                            // Check that the motion was large enough and that there are bombs left
                             int bombsRemaining = game.getBombsRemaining();
                             if (x > downPosition[1] + 100 && bombsRemaining > 0) {
                                 listener.onUpdate(State.BOMB_THROWN);
                                 game.useBomb();
+                                // Remove a bomb from the display
                                 bombs[bombsRemaining - 1].setVisibility(View.INVISIBLE);
                                 Log.i("GameFragment", "Bomb thrown, " + game.getBombsRemaining() + " bombs left");
                             }
@@ -121,10 +131,12 @@ public class GameFragment extends Fragment {
                 return true;
             }
         });
+        // Add click listener for submit button
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String guessString = guess.getText().toString();
+                // Require a guess to be entered
                 if (guessString.equals("")) {
                     Toast.makeText(view.getContext(), R.string.no_guess, Toast.LENGTH_SHORT).show();
                 } else {
@@ -133,6 +145,7 @@ public class GameFragment extends Fragment {
                     } else {
                         ++incorrectGuesses;
                         listener.onUpdate(State.INCORRECT_GUESS);
+                        // Update the alerts display
                         if (incorrectGuesses < 3) {
                             alerts[incorrectGuesses].setVisibility(View.VISIBLE);
                         }
@@ -163,15 +176,17 @@ public class GameFragment extends Fragment {
         bundle.putBoolean("hasDivision", question.hasDivision());
     }
 
+    // Sets the new question and updates the display
     void showNextQuestion(Question nextQuestion) {
         game.setQuestion(nextQuestion);
         question.setText(game.displayQuestion());
-        guess.getText().clear();
+        guess.getText().clear(); // Clear the guess
         incorrectGuesses = 0;
         alerts[1].setVisibility(View.INVISIBLE);
         alerts[2].setVisibility(View.INVISIBLE);
     }
 
+    // Minimises the on screen keyboard
     void hideKeyboard() {
         InputMethodManager imm = (InputMethodManager) Objects.requireNonNull(getContext()).getSystemService(Context.INPUT_METHOD_SERVICE);
         assert imm != null;
@@ -186,6 +201,7 @@ public class GameFragment extends Fragment {
         return incorrectGuesses;
     }
 
+    // Resets the game
     void newGame() {
         game = new Game();
     }

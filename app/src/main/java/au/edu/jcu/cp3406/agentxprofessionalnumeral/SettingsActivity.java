@@ -13,6 +13,9 @@ import java.util.Objects;
 
 import au.edu.jcu.cp3406.agentxprofessionalnumeral.Game.Difficulty;
 
+/**
+ * Activity containing setting that modify app behaviour
+ */
 public class SettingsActivity extends AppCompatActivity {
 
     protected static int SETTINGS_REQUEST = 751;
@@ -28,8 +31,10 @@ public class SettingsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_settings);
         difficulty = findViewById(R.id.difficulty);
         playSound = findViewById(R.id.playSound);
+
         if (savedInstanceState == null) {
             Intent intent = getIntent();
+            // Set the selected difficulty
             Difficulty oldDifficulty = (Difficulty) Objects.requireNonNull(intent.getExtras()).get(EXTRA_DIFFICULTY);
             assert oldDifficulty != null;
             switch (oldDifficulty) {
@@ -46,6 +51,7 @@ public class SettingsActivity extends AppCompatActivity {
                     difficulty.setSelection(3);
                     break;
             }
+            // Set the playSound switch position
             playSound.setChecked(intent.getBooleanExtra("playSound", true));
         } else {
             difficulty.setSelection(savedInstanceState.getInt("difficulty"));

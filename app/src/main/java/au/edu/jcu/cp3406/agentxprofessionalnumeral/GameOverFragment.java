@@ -12,7 +12,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -23,10 +22,10 @@ import androidx.fragment.app.Fragment;
 import java.util.Locale;
 import java.util.Objects;
 
+import au.edu.jcu.cp3406.agentxprofessionalnumeral.Game.Difficulty;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
-import twitter4j.User;
 
 
 /**
@@ -34,7 +33,6 @@ import twitter4j.User;
  */
 public class GameOverFragment extends Fragment {
 
-    private View view;
     private StateListener listener;
     private EditText name;
     private Button submit;
@@ -42,10 +40,9 @@ public class GameOverFragment extends Fragment {
     private Button highScores;
     private Button newGame;
     private Button mainMenu;
-    private String difficulty;
+    private Difficulty difficulty;
     private int score;
     private Twitter twitter = TwitterFactory.getSingleton();
-    private User user;
     private boolean scoreSubmitted;
     private boolean scoreShared;
 
@@ -64,7 +61,7 @@ public class GameOverFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_game_over, container, false);
+        View view = inflater.inflate(R.layout.fragment_game_over, container, false);
 
         name = view.findViewById(R.id.name);
         submit = view.findViewById(R.id.submit);
@@ -73,6 +70,7 @@ public class GameOverFragment extends Fragment {
         newGame = view.findViewById(R.id.newGame);
         mainMenu = view.findViewById(R.id.mainMenu);
 
+        // Load state if saved
         if (savedInstanceState == null) {
             scoreSubmitted = false;
             scoreShared = false;
@@ -84,14 +82,19 @@ public class GameOverFragment extends Fragment {
             share.setText(savedInstanceState.getCharSequence("shareText"));
         }
 
+        // Add button click listeners
+        // Enter score into database
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new UpdateScoreTask().execute();
+                ScoreTaskParams params = new ScoreTaskParams(name.getText().toString(), score,
+                        difficulty.name().toLowerCase(), getContext());
+                new UpdateScoreTask().execute(params);
                 scoreSubmitted = true;
                 toggleButtonsVisible();
             }
         });
+        // Share score to Twitter
         share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -99,13 +102,16 @@ public class GameOverFragment extends Fragment {
                 share.setEnabled(false);
             }
         });
+        // Open high scores screen
         highScores.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), ScoresActivity.class);
+                intent.putExtra(ScoresActivity.EXTRA_DIFFICULTY, difficulty);
                 startActivity(intent);
             }
         });
+        // Start a new game
         newGame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -116,6 +122,7 @@ public class GameOverFragment extends Fragment {
                 toggleButtonsVisible();
             }
         });
+        // Return to main menu
         mainMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -133,7 +140,7 @@ public class GameOverFragment extends Fragment {
         bundle.putCharSequence("shareText", share.getText());
     }
 
-
+    // Shares the users score as a Twitter status
     private void tweetScore() {
         Background.run(new Runnable() {
             @Override
@@ -156,9 +163,10 @@ public class GameOverFragment extends Fragment {
         });
     }
 
+    // Checks if the provided Twitter credentials are valid
     private boolean isAuthorised() {
         try {
-            user = twitter.verifyCredentials();
+            twitter.verifyCredentials();
             Log.i("GameOverFragment", "verified");
             return true;
         } catch (Exception e) {
@@ -167,6 +175,7 @@ public class GameOverFragment extends Fragment {
         }
     }
 
+    // Switches whether the submission or menu button groups are active
     private void toggleButtonsVisible() {
         View[] submissionViews = new View[]{name, submit};
         View[] menuViews = new View[]{share, highScores, newGame, mainMenu};
@@ -196,23 +205,36 @@ public class GameOverFragment extends Fragment {
         this.score = score;
     }
 
-    void setDifficulty(String difficulty) {
+    void setDifficulty(Difficulty difficulty) {
         this.difficulty = difficulty;
     }
 
-    private class UpdateScoreTask extends AsyncTask<Void, Void, Boolean> {
+    // Inner class to hold parameters for database update thread
+    private static class ScoreTaskParams {
 
-        private ContentValues scoreValues;
+        String name;
+        int score;
+        String difficulty;
+        Context context;
 
-        protected void onPreExecute() {
-            scoreValues = new ContentValues();
-            scoreValues.put("NAME", name.getText().toString());
-            scoreValues.put("SCORE", score);
-            scoreValues.put("DIFFICULTY", difficulty);
+        ScoreTaskParams(String name, int score, String difficulty, Context context) {
+            this.name = name;
+            this.score = score;
+            this.difficulty = difficulty;
+            this.context = context;
         }
+    }
 
-        protected Boolean doInBackground(Void... voids) {
-            SQLiteOpenHelper agentxDatabaseHelper = new AgentxDatabaseHelper(getContext());
+    // Inner class that runs a thread to add the users score to the database
+    private static class UpdateScoreTask extends AsyncTask<ScoreTaskParams, Void, Boolean> {
+
+        protected Boolean doInBackground(ScoreTaskParams... params) {
+            ContentValues scoreValues = new ContentValues();
+            scoreValues.put("NAME", params[0].name);
+            scoreValues.put("SCORE", params[0].score);
+            scoreValues.put("DIFFICULTY", params[0].difficulty);
+            Context context = params[0].context;
+            SQLiteOpenHelper agentxDatabaseHelper = new AgentxDatabaseHelper(context);
             try {
                 SQLiteDatabase db = agentxDatabaseHelper.getWritableDatabase();
                 db.insert("SCORES", null, scoreValues);
@@ -221,15 +243,10 @@ public class GameOverFragment extends Fragment {
                 return true;
             } catch (SQLiteException e) {
                 Log.i("GameOverFragment", "Database update failed");
-                return false;
-            }
-        }
-
-        protected void onPostExecute(Boolean success) {
-            if (!success) {
-                Toast toast = Toast.makeText(getContext(),
+                Toast toast = Toast.makeText(context,
                         "Database unavailable", Toast.LENGTH_SHORT);
                 toast.show();
+                return false;
             }
         }
     }
