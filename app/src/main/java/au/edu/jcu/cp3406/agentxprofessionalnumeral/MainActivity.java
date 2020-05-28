@@ -70,9 +70,11 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == SettingsActivity.SETTINGS_REQUEST) {
-            assert data != null;
-            difficulty = (Difficulty) data.getSerializableExtra(EXTRA_DIFFICULTY);
-            playSound = data.getBooleanExtra("playSound", true);
+            if (resultCode == RESULT_OK) {
+                assert data != null;
+                difficulty = (Difficulty) data.getSerializableExtra(EXTRA_DIFFICULTY);
+                playSound = data.getBooleanExtra("playSound", true);
+            }
         }
     }
 }

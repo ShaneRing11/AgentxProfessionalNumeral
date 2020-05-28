@@ -3,6 +3,7 @@ package au.edu.jcu.cp3406.agentxprofessionalnumeral;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -97,7 +98,9 @@ public class StatusFragment extends Fragment {
                 if (timeBonus > 0) {
                     --timeBonus;
                 }
-                handler.postDelayed(this, 1200);
+                if (detection < 100) {
+                    handler.postDelayed(this, 1200);
+                }
             }
         };
         handler.post(tick);
@@ -116,8 +119,8 @@ public class StatusFragment extends Fragment {
             }
         } else {
             // End the game
-            gameRunning = false;
             message.setText(R.string.spotted);
+            Log.i("StatusFragment", "Stopped ticking");
             handler.removeCallbacks(tick);
             listener.onUpdate(State.GAME_OVER);
         }

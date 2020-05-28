@@ -45,13 +45,13 @@ public class ScoreFragment extends Fragment {
                     new String[]{getArguments().getString("difficulty")},
                     null, null,
                     "SCORE DESC");
-//            cursor.moveToFirst();
 
             // Build an array of scores from the selection selection
+            cursor.moveToFirst();
             String[] scoresList = new String[cursor.getCount()];
             for (int i = 0; i < scoresList.length; ++i) {
                 scoresList[i] = String.format(Locale.getDefault(),
-                        "%-50s%3d",
+                        getString(R.string.scores_entry),
                         cursor.getString(0),
                         cursor.getInt(1));
                 cursor.moveToNext();
@@ -61,11 +61,11 @@ public class ScoreFragment extends Fragment {
             db.close();
 
             // Add the array to the ArrayAdapter
-            ArrayAdapter<String> scoresAdapter = new ArrayAdapter<>(Objects.requireNonNull(getContext()), R.layout.leaderboard_item);
+            ArrayAdapter<String> scoresAdapter = new ArrayAdapter<>(Objects.requireNonNull(getContext()), R.layout.scores_item);
             scoresAdapter.addAll(scoresList);
             listScores.setAdapter(scoresAdapter);
         } catch (SQLException e) {
-            Toast toast = Toast.makeText(getContext(), "Error loading scores", Toast.LENGTH_SHORT);
+            Toast toast = Toast.makeText(getContext(), R.string.scores_error, Toast.LENGTH_SHORT);
             toast.show();
         }
         return view;

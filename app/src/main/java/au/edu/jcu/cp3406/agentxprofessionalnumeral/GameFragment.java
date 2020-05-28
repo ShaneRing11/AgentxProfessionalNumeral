@@ -204,6 +204,9 @@ public class GameFragment extends Fragment {
     // Resets the game
     void newGame() {
         game = new Game();
+        for (ImageView bomb : bombs) {
+            bomb.setVisibility(View.VISIBLE);
+        }
     }
 
     int getScore() {

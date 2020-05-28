@@ -28,6 +28,9 @@
     <string name="high_alert">High alert</string>
     <string name="medium_alert">Medium alert</string>
     <string name="low_alert">Low alert</string>
+    <string name="scores_entry">%-50s%3d</string>
+    <string name="scores_error">Error loading scores</string>
+    <string name="no_codename">Enter a codename</string>
     <array name="difficulties">
         <item>Easy</item>
         <item>Medium</item>

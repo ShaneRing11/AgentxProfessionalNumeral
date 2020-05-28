@@ -62,6 +62,7 @@ public class GameOverFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_game_over, container, false);
+        final Context context = getContext();
 
         name = view.findViewById(R.id.name);
         submit = view.findViewById(R.id.submit);
@@ -78,7 +79,7 @@ public class GameOverFragment extends Fragment {
             scoreSubmitted = savedInstanceState.getBoolean("scoreSubmitted");
             scoreShared = savedInstanceState.getBoolean("scoreShared");
             toggleButtonsVisible();
-            share.setEnabled(scoreShared);
+            share.setEnabled(!scoreShared);
             share.setText(savedInstanceState.getCharSequence("shareText"));
         }
 
@@ -87,11 +88,16 @@ public class GameOverFragment extends Fragment {
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ScoreTaskParams params = new ScoreTaskParams(name.getText().toString(), score,
-                        difficulty.name().toLowerCase(), getContext());
-                new UpdateScoreTask().execute(params);
-                scoreSubmitted = true;
-                toggleButtonsVisible();
+                String nameString = name.getText().toString();
+                if (nameString.equals("")) {
+                    Toast.makeText(context, R.string.no_codename, Toast.LENGTH_SHORT).show();
+                } else {
+                    ScoreTaskParams params = new ScoreTaskParams(nameString, score,
+                            difficulty.name().toLowerCase(), context);
+                    new UpdateScoreTask().execute(params);
+                    scoreSubmitted = true;
+                    toggleButtonsVisible();
+                }
             }
         });
         // Share score to Twitter
@@ -106,7 +112,7 @@ public class GameOverFragment extends Fragment {
         highScores.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getContext(), ScoresActivity.class);
+                Intent intent = new Intent(context, ScoresActivity.class);
                 intent.putExtra(ScoresActivity.EXTRA_DIFFICULTY, difficulty);
                 startActivity(intent);
             }
