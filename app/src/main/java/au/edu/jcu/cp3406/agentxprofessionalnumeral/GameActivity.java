@@ -2,6 +2,8 @@ package au.edu.jcu.cp3406.agentxprofessionalnumeral;
 
 import android.content.Context;
 import android.content.Intent;
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -24,6 +26,9 @@ public class GameActivity extends AppCompatActivity implements StateListener {
     private GameFragment gameFragment;
     private GameOverFragment gameOverFragment;
     private QuestionBuilder questionBuilder;
+    private boolean playSounds;
+    private SoundPool soundPool;
+    private int[] soundIds;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +44,17 @@ public class GameActivity extends AppCompatActivity implements StateListener {
         gameOverFragment.setDifficulty(difficulty.name().toLowerCase());
         Log.i("GameActivity", difficulty.name().toLowerCase());
         questionBuilder = new QuestionBuilder(difficulty);
+        playSounds = intent.getBooleanExtra("playSound", true);
+        if (playSounds) {
+            soundPool = new SoundPool(2, AudioManager.STREAM_MUSIC, 0);
+            soundIds = new int[] {soundPool.load(this, R.raw.huh, 1), // Incorrect answer
+                    soundPool.load(this, R.raw.stop, 1), // Third incorrect answer
+                    soundPool.load(this, R.raw.yoink, 1), // Correct answer
+                    soundPool.load(this, R.raw.bomb, 1), // Bomb thrown
+                    soundPool.load(this, R.raw.alarm, 1) // Game over
+            };
+
+        }
         if (savedInstanceState == null) {
             fragmentManager.beginTransaction().hide(gameOverFragment).commit();
             assert gameFragment != null;
@@ -50,29 +66,44 @@ public class GameActivity extends AppCompatActivity implements StateListener {
         }
     }
 
-    //TODO add sound effects
     //TODO create horizontal layouts
     @Override
     public void onUpdate(State state) {
         switch (state) {
-            case CORRECT_GUESS:
-                statusFragment.updateScore(gameFragment.updateScore(statusFragment.getTimeBonus()));
-                gameFragment.showNextQuestion(questionBuilder.buildQuestion());
-                statusFragment.resetTimeBonus();
-                break;
             case INCORRECT_GUESS:
                 if (gameFragment.getIncorrectGuesses() == 3) {
                     gameFragment.showNextQuestion(questionBuilder.buildQuestion());
                     statusFragment.resetTimeBonus();
+                    if (playSounds) {
+                        soundPool.play(soundIds[1], 1, 1, 1, 0, 1);
+                    }
+                } else {
+                    if (playSounds) {
+                        soundPool.play(soundIds[0], 1, 1, 1, 0, 1);
+                    }
                 }
                 statusFragment.updateDetection(10);
                 break;
+            case CORRECT_GUESS:
+                if (playSounds) {
+                    soundPool.play(soundIds[2], 1, 1, 1, 0, 1);
+                }
+                statusFragment.updateScore(gameFragment.updateScore(statusFragment.getTimeBonus()));
+                gameFragment.showNextQuestion(questionBuilder.buildQuestion());
+                statusFragment.resetTimeBonus();
+                break;
             case BOMB_THROWN:
+                if (playSounds) {
+                    soundPool.play(soundIds[3], 1, 1, 1, 0, 1);
+                }
                 gameFragment.showNextQuestion(questionBuilder.buildQuestion());
                 statusFragment.updateDetection(5);
                 statusFragment.resetTimeBonus();
                 break;
             case GAME_OVER:
+                if (playSounds) {
+                    soundPool.play(soundIds[4], 1, 1, 1, 0, 1);
+                }
                 fragmentManager.beginTransaction().hide(gameFragment).commit();
                 hideKeyboard();
                 fragmentManager.beginTransaction().show(gameOverFragment).commit();
@@ -80,7 +111,7 @@ public class GameActivity extends AppCompatActivity implements StateListener {
                 break;
             case NEW_GAME:
                 fragmentManager.beginTransaction().hide(gameOverFragment).commit();
-                hideKeyboard();
+//                hideKeyboard();
                 fragmentManager.beginTransaction().show(gameFragment).commit();
                 gameFragment.newGame();
                 statusFragment.reset();
